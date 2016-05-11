@@ -118,6 +118,25 @@ function parseSav(data) {
 		return out;
 	}
 
+	function getDaycareInUse() {
+		return (hex2int(0x2CF4, 1) == 1);
+	}
+
+	function getDaycarePokemon() {
+		var pokemon = {};
+
+		var offset = 0x2CF5;
+		var size = 10;
+		pokemon.name = getTextString(offset, size);
+
+		offset = 0x2D00;
+		pokemon.OTTrainer = getTextString(offset, size);
+
+		offset = 0x2D0B;
+		pokemon.details = new Pokemon((offset), false);
+		return pokemon;
+	}
+
 	function getCurrentPCBox() {
 		return lowNibble(hex2int(0x284C, 1)) + 1;
 	}
@@ -585,5 +604,6 @@ function parseSav(data) {
 		partyList : getPartyList(),
 		currentBoxList : getCurrentBoxList(),
 		allBoxLists: getAllBoxList(),
+		daycarePokemon: getDaycarePokemon()
 	};
 }
