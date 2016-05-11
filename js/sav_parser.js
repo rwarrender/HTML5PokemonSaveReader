@@ -34,6 +34,39 @@ function parseSav(data) {
 		return hex2int(offset, size);
 	}
 
+	function getBadges() {
+		var offset = 0x2602;
+		var badgeData = hex2int(offset, 1);
+		var allBadges = [
+			{"name":"Boulder", "collected": false},
+			{"name":"Cascade", "collected": false},
+			{"name":"Thunder", "collected": false},
+			{"name":"Rainbow", "collected": false},
+			{"name":"Soul", "collected": false},
+			{"name":"Marsh", "collected": false},
+			{"name":"Volcano", "collected": false},
+			{"name":"Earth", "collected": false}];
+
+		if (badgeData & parseInt('10000000', 2))
+			allBadges[0].collected = true;
+		if (badgeData & parseInt('01000000', 2))
+			allBadges[1].collected = true;
+		if (badgeData & parseInt('00100000', 2))
+			allBadges[2].collected = true;
+		if (badgeData & parseInt('00010000', 2))
+			allBadges[3].collected = true;
+		if (badgeData & parseInt('00001000', 2))
+			allBadges[4].collected = true;
+		if (badgeData & parseInt('00000100', 2))
+			allBadges[5].collected = true;
+		if (badgeData & parseInt('00000010', 2))
+			allBadges[6].collected = true;
+		if (badgeData & parseInt('00000001', 2))
+			allBadges[7].collected = true;
+
+		return allBadges;
+	}
+
 	function getTimePlayed() {
 		var offset = 0x2CED;
 		return {
@@ -132,6 +165,14 @@ function parseSav(data) {
 
 	function getCurrentBoxList() {
 		return getPokemonList(0x30C0, 20, false);
+	}
+
+	function getAllBoxList() {
+		var boxContents = [];
+		for (var i = 1; i <= 12; i++) {
+			boxContents[i] = getBoxList(i);
+		}
+		return boxContents;
 	}
 
 	function getPokemonList(offset, capacity, isParty) {
@@ -241,7 +282,7 @@ function parseSav(data) {
 			0xE6 : "?", 0xE7 : "!", 0xE8 : ".", 0xEF: "♂",
 
 			0xF1 : "*",
-			0xF3 : "/", 0xF4 : ",",
+			0xF3 : "/", 0xF4 : ",", 0xF5: "♀",
 
 			0xF6 : "0", 0xF7 : "1", 0xF8 : "2", 0xF9 : "3", 0xFA : "4",
 			0xFB : "5", 0xFC : "6", 0xFD : "7", 0xFE : "8", 0xFF : "9"
@@ -529,6 +570,7 @@ function parseSav(data) {
 	return {
 		trainerName: getTrainerName(),
 		rivalName: getRivalName(),
+		badges:getBadges(),
 		trainerID: getTrainerID(),
 		timePlayed : getTimePlayed(),
 		pocketItemList : getPocketItemList(),

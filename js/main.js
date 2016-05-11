@@ -57,14 +57,34 @@ function readFile(savefile) {
 			}
 			else {
 				console.log(results);
+
 				var resultsContents = "<ul id='results'>"+
 						"<li><b>Trainer Name:</b> " + results.trainerName + "</li>"+
-						"<li><b>Trainer ID:</b> " + results.trainerID + "</li>"+
-						"<li><b>Rival Name:</b> " + results.rivalName + "</li>"+
+						"<li><b>Trainer ID:</b> " + results.trainerID + "</li>";
+
+				addBadges();
+
+				resultsContents +=	"<li><b>Rival Name:</b> " + results.rivalName + "</li>"+
 						"<li><b>Time Played:</b> " + results.timePlayed.hours +":"+ results.timePlayed.minutes + ":" + results.timePlayed.seconds + "</li>"+
 						"<li><b>Money:</b> " + results.money + "</li>"+
 						"<li><b>Checksum:</b> " + results.checksum + "</li>"+
 						"<li><b>Current PC Box:</b> " + results.currentPCBox + "</li>";
+
+				function addBadges() {
+					var badges = results.badges;
+					resultsContents += "<li><b>Badges: </b> " + badges.length + " / 8 " + "</li>";
+					resultsContents += "<ul>";
+					for(var i = 0; i < badges.length; i++) {
+						resultsContents += "<li> Badge: ";
+						if (badges[i].collected) {
+							resultsContents += " ✓ ";
+						} else {
+							resultsContents += " ✗ ";
+						} 
+						resultsContents += badges[i].name + "</li>";
+					}
+					resultsContents += "</ul>";
+				}
 
 				function addItemList(label, items) {
 					resultsContents += "<li><b>"+label+": </b>";
@@ -128,11 +148,15 @@ function readFile(savefile) {
 				addPokemonList("Party Pok&#233;mon", results.partyList);
 				addPokemonList("Current Box Pok&#233;mon", results.currentBoxList);
 
+				for (var i = 1; i<=12; i++) {
+					addPokemonList("Box " + i + " Pok&#233;mon", results.allBoxLists[i]);
+				}
+
 				resultsContents += "</ul>";
 				$("#outputSection").append(resultsContents);
 
 			}
-			updateBG();
+			//updateBG();
 		};
 	})(savefile);
 	reader.readAsBinaryString(savefile);
