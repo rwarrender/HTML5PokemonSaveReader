@@ -237,8 +237,8 @@ function parseSav(data) {
 			0xB4 : "u", 0xB5 : "v", 0xB6 : "w", 0xB7 : "x", 0xB8 : "y",
 			0xB9 : "z",
 
-			0xE1 : "PK", 0xE2 : "MN", 0xE3 : "-",
-			0xE6 : "?", 0xE7 : "!", 0xE8 : ".",
+			0xE0 : "'", 0xE1 : "PK", 0xE2 : "MN", 0xE3 : "-",
+			0xE6 : "?", 0xE7 : "!", 0xE8 : ".", 0xEF: "♂",
 
 			0xF1 : "*",
 			0xF3 : "/", 0xF4 : ",",
@@ -541,6 +541,7 @@ function parseSav(data) {
 		playerPosition : getPlayerPosition(),
 		pikachuFriendship: getPikachuFriendship(),
 		partyList : getPartyList(),
-		currentBoxList : getCurrentBoxList()
+		currentBoxList : getCurrentBoxList(),
+		allBoxLists: getAllBoxList(),
 	};
 }
